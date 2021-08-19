@@ -2,26 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStats : MonoBehaviour
-{
-    public string playerName;
-    public int lives;
-    public float movementSpeed;
-    public bool jetPack;
-    public bool shield;
-    public bool doubleJump;
-    public bool doubleShoot;
-    public string playerInputString;
-
-    // Start is called before the first frame update
-    void Awake()
+    public class PlayerStats : MonoBehaviour
     {
-        lives = 4;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
+        public string playerName;
+        public Vector2 spawnPoint;
+        public int lifeCounter;
+        public float movementSpeed;
+        public bool jetPack = false;
+        public bool shield = false;
+        public bool doubleJump = false;
+        public bool doubleShoot = false;
+        public string playerInputString = "";
         
     }
-}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using sharedObjects;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -13,9 +14,23 @@ public class PlayerMovement : MonoBehaviour
     private float inputDirection;
     private  bool jump = false;
     private  bool crouch = false;
-    float xBound = 11.5f;
-    float yBound = 6f;
-    // Start is called before the first frame update
+
+       void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        controller.Move(inputDirection*Time.deltaTime, crouch, jump);
+        jump = false;
+        animator.SetFloat("Speed", Mathf.Abs(inputDirection));
+    }
+
+   
+
+     //Input Event Functions
     public void OnJump(InputAction.CallbackContext context){
         if (context.started && !PauseController.gameIsPaused) {
             jump = true;
@@ -51,26 +66,5 @@ public class PlayerMovement : MonoBehaviour
     public void OnCrouching (bool isCrouching) {
             animator.SetBool("IsCrouching",isCrouching);
     }
-    void Start()
-    {
-        spawnPoint = this.transform.position;
-    }
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-
-        controller.Move(inputDirection*Time.deltaTime, crouch, jump);
-        jump = false;
-        CheckOutOfBounds();
-        animator.SetFloat("Speed", Mathf.Abs(inputDirection));
-    }
-
-    public void CheckOutOfBounds(){
-        if (this.transform.position.x > xBound || this.transform.position.x < -xBound|| this.transform.position.y > yBound || this.transform.position.y < -yBound) {
-            SoundManager.instance.PlaySoundEffect($"Death{UnityEngine.Random.Range(1,4)}",0.2f);
-            this.playerStats.lives --;
-            this.transform.position = spawnPoint;
-        }
-    }
 }

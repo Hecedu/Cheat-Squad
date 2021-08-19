@@ -19,7 +19,7 @@ public class LifeCounter : MonoBehaviour
     void Update()
     {
         for (int i  = 0; i < Lifes.Length; i++ ){
-            if (i < playerStats.lives) Lifes[i].enabled = true;
+            if (i < playerStats.lifeCounter) Lifes[i].enabled = true;
             else Lifes[i].enabled = false;
         }        
     }
