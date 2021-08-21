@@ -5,6 +5,8 @@ using UnityEngine;
     public class PlayerStats : MonoBehaviour
     {
         public string playerName;
+        public int playerNumber;
+        public PlayerState playerState;
         public Vector2 spawnPoint;
         public int lifeCounter;
         public float movementSpeed;
@@ -13,5 +15,5 @@ using UnityEngine;
         public bool doubleJump = false;
         public bool doubleShoot = false;
         public string playerInputString = "";
-        
     }
+    public enum PlayerState {Respawning, Playing, Defeated};

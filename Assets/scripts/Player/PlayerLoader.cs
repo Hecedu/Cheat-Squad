@@ -28,21 +28,31 @@ public class PlayerLoader : MonoBehaviour
     public void InitializePlayers (List<PlayerInitData> players){
         playerInputs = new List<PlayerInput>();
         for (int i = 0; i<players.Count ; i++){
-            playerInputs.Add(CreatePlayer(players[i],i+1));
+            playerInputs.Add(CreatePlayer(players[i]));
         }
     } 
-    private PlayerInput CreatePlayer(PlayerInitData player, int playerNumber){
-        int[] otherPlayers = GetOtherPlayerLayers(playerNumber);
-        PlayerInput currentPlayer = PlayerInput.Instantiate(playerPrefab, controlScheme: player.controlScheme, pairWithDevice: Keyboard.current);
-        currentPlayer.tag = $"Player{playerNumber}";
-        currentPlayer.gameObject.layer = LayerMask.NameToLayer($"Player{playerNumber}");
-        currentPlayer.gameObject.GetComponent<CharacterController2D>().m_WhatIsGround = LayerMask.GetMask("Ground",$"Player{otherPlayers[0]}");
-        currentPlayer.gameObject.GetComponent<PlayerStats>().playerName = player.playerName;
-        currentPlayer.gameObject.GetComponent<PlayerStats>().spawnPoint = player.spawnPoint;
-        currentPlayer.transform.position = player.spawnPoint;
+    private PlayerInput CreatePlayer(PlayerInitData playerInitData){
+        PlayerInput currentPlayer = PlayerInput.Instantiate(playerPrefab, controlScheme: playerInitData.controlScheme, pairWithDevice: Keyboard.current);
+        InitializePlayerStats(playerInitData, currentPlayer);
+        SetTagAndLayers(currentPlayer);
+        currentPlayer.transform.position = playerInitData.spawnPoint;
         return currentPlayer;
     }
-    private int[] GetOtherPlayerLayers (int playerNumber){
+    private void SetTagAndLayers (PlayerInput player) {
+        var playerNumber = player.gameObject.GetComponent<PlayerStats>().playerNumber;
+        int[] otherPlayers = GetOtherPlayerLayers(playerNumber);
+        player.tag = $"Player{playerNumber}";
+        player.gameObject.layer = LayerMask.NameToLayer($"Player{playerNumber}");
+        player.gameObject.GetComponent<CharacterController2D>().groundLayerMask = LayerMask.GetMask("Ground",$"Player{otherPlayers[0]}");
+    }
+    private void InitializePlayerStats (PlayerInitData playerInitData, PlayerInput currentPlayer) {
+        var currentPlayerStats = currentPlayer.gameObject.GetComponent<PlayerStats>();
+        currentPlayerStats.playerName = playerInitData.playerName;
+        currentPlayerStats.spawnPoint = playerInitData.spawnPoint;
+        currentPlayerStats.playerState = PlayerState.Playing;
+        currentPlayerStats.playerNumber = playerInitData.playerNumber;
+    }
+        private int[] GetOtherPlayerLayers (int playerNumber){
         List<int> playernumbers = new List<int>{1,2};
         playernumbers.Remove(playerNumber);
         return playernumbers.ToArray();

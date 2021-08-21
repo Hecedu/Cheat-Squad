@@ -8,7 +8,8 @@ public class Weapon : MonoBehaviour
     public Transform firePoint;
     public Transform crouchFirePoint;
     public GameObject bulletPrefab; 
-    public float pushBackForce;
+    public float recoilForceX;
+    public float recoilForceY;
     // Start is called before the first frame update
     public void OnShoot(InputAction.CallbackContext context) {
         if (context.started && !PauseController.gameIsPaused){
@@ -28,10 +29,10 @@ public class Weapon : MonoBehaviour
     }
     public void Shoot(){
         SoundManager.instance.PlaySoundEffect($"Shot{UnityEngine.Random.Range(1,4)}",0.2f);
-        //Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-        Instantiate(bulletPrefab, new Vector3(firePoint.position.x,firePoint.position.y + 0.2f,firePoint.position.z), firePoint.rotation);
-        Instantiate(bulletPrefab, new Vector3(firePoint.position.x,firePoint.position.y - 0.2f,firePoint.position.z), firePoint.rotation);
-        this.gameObject.GetComponent<Rigidbody2D>().AddForce((-transform.right)*pushBackForce);
+        //Instantiate(bulletPrefab, new Vector3(firePoint.position.x,firePoint.position.y + 0.2f,firePoint.position.z), firePoint.rotation);
+        //Instantiate(bulletPrefab, new Vector3(firePoint.position.x,firePoint.position.y - 0.2f,firePoint.position.z), firePoint.rotation);
+        if (transform.rotation.y > -1) this.gameObject.GetComponent<CharacterController2D>().StartKnockback(new Vector2 (recoilForceX, recoilForceY), false);
+        else this.gameObject.GetComponent<CharacterController2D>().StartKnockback(new Vector2 (recoilForceX, recoilForceY), true);
     }
 }

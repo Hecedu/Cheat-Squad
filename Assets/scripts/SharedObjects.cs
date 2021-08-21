@@ -4,13 +4,15 @@ using UnityEngine;
 
 namespace sharedObjects {
 
-    public class PlayerInitData : MonoBehaviour {
+    public class PlayerInitData{
         public string playerName;
+        public int playerNumber;
         public string controlScheme;
         public Vector2 spawnPoint;
 
-        public PlayerInitData(string _playerName, string _controlScheme, Vector2 _spawnPoint){
+        public PlayerInitData(string _playerName, int _playerNumber, string _controlScheme, Vector2 _spawnPoint){
             controlScheme = _controlScheme;
+            playerNumber = _playerNumber;
             playerName = _playerName;
             spawnPoint = _spawnPoint;
         }
@@ -56,8 +58,8 @@ namespace sharedObjects {
         Results
     }
     public enum cameraTargets {
-        Player1,
-        Player2,
-        Both
+        Player,
+        Stage,
+        ActivePlayers
         };
 }

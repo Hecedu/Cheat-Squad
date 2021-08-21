@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using sharedObjects;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovementController : MonoBehaviour
 {
     public CharacterController2D controller;
     public Animator animator;
@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private float inputDirection;
     private  bool jump = false;
     private  bool crouch = false;
+    private bool knockback = true;
 
        void Start()
     {
@@ -24,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         controller.Move(inputDirection*Time.deltaTime, crouch, jump);
+        knockback = false;
         jump = false;
         animator.SetFloat("Speed", Mathf.Abs(inputDirection));
     }

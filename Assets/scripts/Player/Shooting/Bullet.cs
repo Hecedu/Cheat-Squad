@@ -5,7 +5,8 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public float speed = 20f;
-    public float force = 3f;
+    public float knockbackForceX = 3f;
+    public float knockbackForceY = 3f;
     public float time = 2f;
     public Rigidbody2D rb; 
 
@@ -19,11 +20,13 @@ public class Bullet : MonoBehaviour
     {
         
     }
-    private void OnCollisionEnter2D(Collision2D other) {
-        Destroy(gameObject);
+    private void OnTriggerEnter2D(Collider2D other) {
+        Destroy (gameObject);
         if (other.gameObject.tag == "Player1" || other.gameObject.tag == "Player2" )
         {
-            other.gameObject.GetComponent<Rigidbody2D>().AddForce(transform.right*force);
+            if (transform.rotation.y > -1) other.gameObject.GetComponent<CharacterController2D>().StartKnockback(new Vector2 (knockbackForceX, knockbackForceY), true);
+            else other.gameObject.GetComponent<CharacterController2D>().StartKnockback(new Vector2 (knockbackForceX, knockbackForceY), false);
+           
         }
     }
 }
