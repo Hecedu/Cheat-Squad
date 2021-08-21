@@ -9,6 +9,8 @@ TagManager:
   - Player3
   - Player4
   - PauseMenu
+  - JumpCollider
+  - CrouchCollider
   layers:
   - Default
   - TransparentFX
@@ -20,7 +22,7 @@ TagManager:
   - Player2
   - Player3
   - Player4
-  - Ground
+  - Solids
   - 
   - 
   - 
