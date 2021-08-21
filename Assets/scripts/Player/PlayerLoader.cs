@@ -40,10 +40,9 @@ public class PlayerLoader : MonoBehaviour
     }
     private void SetTagAndLayers (PlayerInput player) {
         var playerNumber = player.gameObject.GetComponent<PlayerStats>().playerNumber;
-        int[] otherPlayers = GetOtherPlayerLayers(playerNumber);
         player.tag = $"Player{playerNumber}";
-        player.gameObject.layer = LayerMask.NameToLayer($"Player{playerNumber}");
-        player.gameObject.GetComponent<CharacterController2D>().groundLayerMask = LayerMask.GetMask("Ground",$"Player{otherPlayers[0]}");
+        player.gameObject.layer = LayerMask.NameToLayer($"Solids");
+        player.gameObject.GetComponent<CharacterController2D>().solidsLayerMask = LayerMask.GetMask("Solids");
     }
     private void InitializePlayerStats (PlayerInitData playerInitData, PlayerInput currentPlayer) {
         var currentPlayerStats = currentPlayer.gameObject.GetComponent<PlayerStats>();
@@ -52,9 +51,5 @@ public class PlayerLoader : MonoBehaviour
         currentPlayerStats.playerState = PlayerState.Playing;
         currentPlayerStats.playerNumber = playerInitData.playerNumber;
     }
-        private int[] GetOtherPlayerLayers (int playerNumber){
-        List<int> playernumbers = new List<int>{1,2};
-        playernumbers.Remove(playerNumber);
-        return playernumbers.ToArray();
-    }
 }
+

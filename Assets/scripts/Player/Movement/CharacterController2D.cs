@@ -6,25 +6,30 @@ using System.Linq;
 public class CharacterController2D : MonoBehaviour
 {
 	public ParticleSystem dust;
-	
+	private Rigidbody2D rigidBody2D;
+	//Feel variables
 	[SerializeField] private float jumpForce = 400f;	
 	[SerializeField] private float moveSpeed = 10f;
 	private Vector2 knockbackForce = new Vector2(0,0);
 	[Range(0, 1)] [SerializeField] private float crouchSpeed = .36f;			// Amount of maxSpeed applied to crouching movement. 1 = 100%
 	[Range(0, .3f)] [SerializeField] private float movementSmoothing = .05f;	// How much to smooth out the movement
 	[SerializeField] private bool airControlEnabled = true;
-	public LayerMask groundLayerMask;
+	//ground/ceiling check system
 	[SerializeField] private Transform ceilingCheck;							// A position marking where to check for ceilings
+	[SerializeField] private Transform groundCheck;
+	const float groundedRadius = 0.1f; 
+	const float ceilingRadius = 0.2f; 
+	public LayerMask solidsLayerMask;
 	[SerializeField] private Collider2D crouchDisableCollider;				// A collider that will be disabled when crouching
 	[SerializeField] private bool isGrounded;            // Whether or not the player is grounded.
-	const float ceilingRadius = .15f; // Radius of the overlap circle to determine if the player can stand up
-	private Rigidbody2D rigidBody2D;
+	//Reference variables
 	private bool isFacingRight = true;  // For determining which way the player is currently facing.
 	private Vector3 velocity = Vector3.zero;
 
+	//knockback system
 	[SerializeField] private bool isKnockbackPlaying = false;
 	private bool isKnockbackDirectionRight = true;
-
+	private List<string> otherPlayerLayers;
 
 
 	[Header("Events")]
@@ -38,6 +43,8 @@ public class CharacterController2D : MonoBehaviour
 	public BoolEvent OnCrouchEvent;
 	private bool m_wasCrouching = false;
 
+
+
 	private void Awake()
 	{
 		rigidBody2D = GetComponent<Rigidbody2D>();
@@ -48,19 +55,40 @@ public class CharacterController2D : MonoBehaviour
 		if (OnCrouchEvent == null)
 			OnCrouchEvent = new BoolEvent();
 	}
+	private void Start() {
+		otherPlayerLayers = new List<string>();
+		foreach (int playerNumber in GameController.instance.GetOtherPlayerNumbers(this.GetComponent<PlayerStats>().playerNumber)){
+			otherPlayerLayers.Add($"Player{playerNumber}");
+		}
+	}
 
 	private void FixedUpdate()
 	{
+		bool wasGrounded = isGrounded;
+		isGrounded = false;
+		Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, groundedRadius, solidsLayerMask);
+		for (int i = 0; i < colliders.Length; i++)
+		{
+			if (colliders[i].gameObject != gameObject)
+			{
+				isGrounded = true;
+				if (!wasGrounded)
+					OnLandEvent.Invoke();
+			}
+		}
 	}
 	public void Move(float inputDirectionX, bool crouch, bool jump)
 	{
 		// If crouching, check to see if the character can stand up
 		if (!crouch)
 		{
-			// If the character has a ceiling preventing them from standing up, keep them crouching
-			if (Physics2D.OverlapCircle(ceilingCheck.position, ceilingRadius, groundLayerMask))
+			Collider2D[] colliders = Physics2D.OverlapCircleAll(ceilingCheck.position, ceilingRadius, solidsLayerMask);
+			for (int i = 0; i < colliders.Length; i++)
 			{
-				crouch = true;
+				if (colliders[i].gameObject != gameObject)
+				{
+					crouch = true;
+				}
 			}
 		}
 		if (isKnockbackPlaying) {
@@ -118,21 +146,6 @@ public class CharacterController2D : MonoBehaviour
 		{
 			ApplyForceUp(jumpForce);
 		}
-		
-	}
-	private void OnCollisionEnter2D(Collision2D other) {
-		var playerLayers = new List<string>();
-		foreach (int playerNumber in GameController.instance.GetOtherPlayerNumbers(this.GetComponent<PlayerStats>().playerNumber)){
-			playerLayers.Add($"Player{playerNumber}");
-		}
-		  		if (playerLayers.Contains(LayerMask.LayerToName(other.gameObject.layer)) || other.gameObject.layer == LayerMask.NameToLayer("Ground")){
-			  	bool wasGrounded = isGrounded;
-		        isGrounded = false;
-				isGrounded = true;
-				isKnockbackPlaying = false;
-				if (!wasGrounded)
-					OnLandEvent.Invoke();
-		  }
 	}
 	
 	public void StartKnockback (Vector2 newKnockbackForce, bool applyRight) {
@@ -166,5 +179,8 @@ public class CharacterController2D : MonoBehaviour
 
 	private void CreateDust(){
 		dust.Play();
+	}
+	private void OnCollisionEnter2D(Collision2D other) {
+		isKnockbackPlaying = false;
 	}
 }
