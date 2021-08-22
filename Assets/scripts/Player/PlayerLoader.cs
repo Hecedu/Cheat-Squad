@@ -35,6 +35,7 @@ public class PlayerLoader : MonoBehaviour
         PlayerInput currentPlayer = PlayerInput.Instantiate(playerPrefab, controlScheme: playerInitData.controlScheme, pairWithDevice: Keyboard.current);
         InitializePlayerStats(playerInitData, currentPlayer);
         SetTagAndLayers(currentPlayer);
+        if (playerInitData.spawnPoint.x > 0) currentPlayer.transform.rotation = Quaternion.Euler(0, -180, 0);
         currentPlayer.transform.position = playerInitData.spawnPoint;
         return currentPlayer;
     }

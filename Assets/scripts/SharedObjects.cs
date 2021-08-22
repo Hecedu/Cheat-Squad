@@ -57,7 +57,7 @@ namespace sharedObjects {
         Game,
         Results
     }
-    public enum cameraTargets {
+    public enum CameraTargets {
         Player,
         Stage,
         ActivePlayers

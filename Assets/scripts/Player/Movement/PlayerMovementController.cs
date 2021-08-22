@@ -14,7 +14,6 @@ public class PlayerMovementController : MonoBehaviour
     private float inputDirection;
     private  bool jump = false;
     private  bool crouch = false;
-    private bool knockback = true;
 
        void Start()
     {
@@ -25,7 +24,6 @@ public class PlayerMovementController : MonoBehaviour
     void FixedUpdate()
     {
         controller.Move(inputDirection*Time.deltaTime, crouch, jump);
-        knockback = false;
         jump = false;
         animator.SetFloat("Speed", Mathf.Abs(inputDirection));
     }
@@ -61,8 +59,9 @@ public class PlayerMovementController : MonoBehaviour
         }
  
     }
-    public void OnLanding (){ 
+    public void OnLanding (bool landedOnGround){ 
         animator.SetBool ("IsJumping", false);
+        if (landedOnGround) this.GetComponentInChildren<PlayerParticleController>().playDustLanding();
         SoundManager.instance.PlaySoundEffect($"Landing{UnityEngine.Random.Range(1,4)}",0.2f);
     }
     public void OnCrouching (bool isCrouching) {

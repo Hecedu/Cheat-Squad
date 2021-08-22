@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 public class CharacterController2D : MonoBehaviour
 {
-	public ParticleSystem dust;
+
 	private Rigidbody2D rigidBody2D;
 	//Feel variables
 	[SerializeField] private float jumpForce = 400f;	
@@ -23,7 +23,7 @@ public class CharacterController2D : MonoBehaviour
 	[SerializeField] private Collider2D crouchDisableCollider;				// A collider that will be disabled when crouching
 	[SerializeField] private bool isGrounded;            // Whether or not the player is grounded.
 	//Reference variables
-	private bool isFacingRight = true;  // For determining which way the player is currently facing.
+	private bool isFacingRight;  // For determining which way the player is currently facing.
 	private Vector3 velocity = Vector3.zero;
 
 	//knockback system
@@ -32,15 +32,13 @@ public class CharacterController2D : MonoBehaviour
 	private List<string> otherPlayerLayers;
 
 
-	[Header("Events")]
-	[Space]
 
-	public UnityEvent OnLandEvent;
 
 	[System.Serializable]
 	public class BoolEvent : UnityEvent<bool> { }
 
 	public BoolEvent OnCrouchEvent;
+	public BoolEvent OnLandEvent;
 	private bool m_wasCrouching = false;
 
 
@@ -49,13 +47,15 @@ public class CharacterController2D : MonoBehaviour
 	{
 		rigidBody2D = GetComponent<Rigidbody2D>();
 
-		if (OnLandEvent == null)
-			OnLandEvent = new UnityEvent();
+		if (OnLandEvent == null) 
+			OnLandEvent = new BoolEvent();
 
 		if (OnCrouchEvent == null)
 			OnCrouchEvent = new BoolEvent();
 	}
 	private void Start() {
+		if (transform.rotation.y < 0) isFacingRight = false;
+		else isFacingRight = true;
 		otherPlayerLayers = new List<string>();
 		foreach (int playerNumber in GameController.instance.GetOtherPlayerNumbers(this.GetComponent<PlayerStats>().playerNumber)){
 			otherPlayerLayers.Add($"Player{playerNumber}");
@@ -69,11 +69,13 @@ public class CharacterController2D : MonoBehaviour
 		Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, groundedRadius, solidsLayerMask);
 		for (int i = 0; i < colliders.Length; i++)
 		{
+			Debug.Log(colliders[i].gameObject.name);
 			if (colliders[i].gameObject != gameObject)
 			{
 				isGrounded = true;
 				if (!wasGrounded)
-					OnLandEvent.Invoke();
+					
+					OnLandEvent.Invoke(colliders[i].gameObject.tag == "Ground");
 			}
 		}
 	}
@@ -151,10 +153,8 @@ public class CharacterController2D : MonoBehaviour
 	public void StartKnockback (Vector2 newKnockbackForce, bool applyRight) {
 		knockbackForce = newKnockbackForce;
 		isKnockbackDirectionRight = applyRight;
-		if (isGrounded) {
-			ApplyForceUp(knockbackForce.y);
-			isKnockbackPlaying = true;
-		}
+		ApplyForceUp(knockbackForce.y);
+		isKnockbackPlaying = true;
 	}
 
 	private void Flip()
@@ -168,7 +168,7 @@ public class CharacterController2D : MonoBehaviour
 	private void ApplyForceUp(float jumpForce){
 		isGrounded = false;
 		rigidBody2D.AddForce(new Vector2(0f, jumpForce));
-		CreateDust();
+		this.GetComponentInChildren<PlayerParticleController>().playDustJump();
 	}
 	private void ApplyForceHorizontal(float moveDirection, float moveSpeed) {
 		// Move the character by finding the target velocity
@@ -177,9 +177,7 @@ public class CharacterController2D : MonoBehaviour
 		rigidBody2D.velocity = Vector3.SmoothDamp(rigidBody2D.velocity, targetVelocity, ref velocity, movementSmoothing);	
 	}
 
-	private void CreateDust(){
-		dust.Play();
-	}
+
 	private void OnCollisionEnter2D(Collision2D other) {
 		isKnockbackPlaying = false;
 	}

@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 public class Weapon : MonoBehaviour
 {
     public Transform firePoint;
-    public Transform crouchFirePoint;
     public GameObject bulletPrefab; 
     public float recoilForceX;
     public float recoilForceY;
@@ -32,7 +31,8 @@ public class Weapon : MonoBehaviour
         Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         //Instantiate(bulletPrefab, new Vector3(firePoint.position.x,firePoint.position.y + 0.2f,firePoint.position.z), firePoint.rotation);
         //Instantiate(bulletPrefab, new Vector3(firePoint.position.x,firePoint.position.y - 0.2f,firePoint.position.z), firePoint.rotation);
-        if (transform.rotation.y > -1) this.gameObject.GetComponent<CharacterController2D>().StartKnockback(new Vector2 (recoilForceX, recoilForceY), false);
-        else this.gameObject.GetComponent<CharacterController2D>().StartKnockback(new Vector2 (recoilForceX, recoilForceY), true);
+        
+        if (transform.rotation.y > -1) this.gameObject.GetComponentInParent<CharacterController2D>().StartKnockback(new Vector2 (recoilForceX, recoilForceY), false);
+        else this.gameObject.GetComponentInParent<CharacterController2D>().StartKnockback(new Vector2 (recoilForceX, recoilForceY), true);
     }
 }

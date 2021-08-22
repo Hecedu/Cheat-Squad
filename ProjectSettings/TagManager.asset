@@ -11,6 +11,7 @@ TagManager:
   - PauseMenu
   - JumpCollider
   - CrouchCollider
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -18,11 +19,11 @@ TagManager:
   - 
   - Water
   - UI
-  - Player1
-  - Player2
-  - Player3
-  - Player4
+  - Player
   - Solids
+  - Particles
+  - 
+  - 
   - 
   - 
   - 

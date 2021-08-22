@@ -12,6 +12,7 @@ public class PlayerCheatInput : MonoBehaviour
 {
     public PlayerStats playerStats;
     private Queue<CheatInputs> inputQueue = new Queue<CheatInputs>();
+
     public void OnShoot(InputAction.CallbackContext context) {
         if (context.started && !PauseController.gameIsPaused){
             AddToInputQueue(CheatInputs.Shoot);
@@ -53,7 +54,7 @@ public class PlayerCheatInput : MonoBehaviour
         }
         inputQueue.Enqueue(input);
         if (CheatManager.instance.CompareInputsWithCheatCode(inputQueue.ToArray())) {
-            //Assign perk to player.
+            //execute perk code
         }
     } 
     public CheatInputs? DirectionToInput (Vector2 direction) {

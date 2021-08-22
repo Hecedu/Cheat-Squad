@@ -9,19 +9,20 @@ public class CameraController : MonoBehaviour
 {
     public static CameraController instance;
     public Camera myCamera;
-    private cameraTargets currentCameraTarget;
-    public PixelPerfectCamera cameraLOL;
+    private CameraTargets currentCameraTarget;
     private float targetCameraSize;
     private int trackedPlayer = 1;
-    
+    public const float pixelPerfectDefaultCameraSize = 8.4375f;
+    public const float pixelPerfectZoomInCameraSize = 4.21875f;
+     public const float pixelPerfectZoomOutCameraSize = 16.875f;
     // Start is called before the first frame update
     void Start()
     {
-        targetCameraSize = 8.4375f;
+        targetCameraSize = pixelPerfectDefaultCameraSize;
         if (instance == null){
             instance = this;
         }
-        currentCameraTarget = cameraTargets.ActivePlayers;
+        currentCameraTarget = CameraTargets.ActivePlayers;
     }
 
     void FixedUpdate()
@@ -30,12 +31,14 @@ public class CameraController : MonoBehaviour
         myCamera.orthographicSize = Mathf.MoveTowards(myCamera.orthographicSize, targetCameraSize, 0.5f);
     }
 
-    private Vector3 CalculateCameraTargetPosition(cameraTargets cameraTarget){
-        if (cameraTarget == cameraTargets.Player) return new Vector3 (
+    private Vector3 CalculateCameraTargetPosition(CameraTargets cameraTarget){
+        if (cameraTarget == CameraTargets.Player) {
+            return new Vector3 (
                 GameController.instance.playerList[trackedPlayer-1].transform.position.x,
                 GameController.instance.playerList[trackedPlayer-1].transform.position.y,
                 -10f);
-        else if (cameraTarget == cameraTargets.ActivePlayers) {
+        }
+        else if (cameraTarget == CameraTargets.ActivePlayers) {
             var playerList = GameController.instance.playerList;
             Vector3 averageCameraPosition = new Vector3(0f,0f,-10f);
             int activePlayercount = 0;
@@ -49,20 +52,25 @@ public class CameraController : MonoBehaviour
             averageCameraPosition.x = averageCameraPosition.x/activePlayercount;
             averageCameraPosition.y = averageCameraPosition.y/activePlayercount;
             return averageCameraPosition;
-        }
-                
-        else return new Vector3 (0,0,-10);
+        }      
+        else  {
+         
+            return new Vector3 (0,0,-10);
+            }
+
     }
     //lerp in incrmenets
     public void ChangeZoom (float size){
         targetCameraSize = size;
     }
     
-    public void ChangeCameraTarget (cameraTargets cameraTarget) {
+    public void ChangeCameraTarget (CameraTargets cameraTarget) {
         this.currentCameraTarget = cameraTarget;
+        if (cameraTarget == CameraTargets.ActivePlayers) ChangeZoom(pixelPerfectDefaultCameraSize);
+        else if (cameraTarget == CameraTargets.ActivePlayers) ChangeZoom(pixelPerfectZoomInCameraSize);
+        else if (cameraTarget == CameraTargets.Stage) ChangeZoom(pixelPerfectZoomOutCameraSize);
     }
-    public void ChangeCameraTarget (cameraTargets cameraTarget, int playerToTrack) {
-        this.currentCameraTarget = cameraTarget;
+    public void ChangePlayerCameraTarget (int playerToTrack) {
         this.trackedPlayer = playerToTrack;
     }
     public IEnumerator Shake (float duration, float magnitude) {
@@ -76,9 +84,4 @@ public class CameraController : MonoBehaviour
             yield return null;
         }
     }
-    private float GetLargestNumber (float num1, float num2) {
-        if (num1> num2) return num1;
-        else return num2;
-    }
-
 }

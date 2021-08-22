@@ -6,18 +6,16 @@ using UnityEngine.UI;
 public class CountdownController : MonoBehaviour
 {
     public static CountdownController instance;
-    public int countdownTime;
     public Text countdownDisplay;
 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        if (instance = null) {
+        if (instance == null) {
             instance = this;
-        }
-        StartCoroutine(StartCountdown());
-        
+        }        
+
     }
 
     // Update is called once per frame
@@ -25,7 +23,7 @@ public class CountdownController : MonoBehaviour
     {
         
     }
-    IEnumerator StartCountdown() {
+    public IEnumerator StartCountdown(int countdownTime) {
         var playerlist = GameController.instance.playerInitDataList;
         PauseController.instance.PauseInput();
         countdownDisplay.text = "";
@@ -34,12 +32,13 @@ public class CountdownController : MonoBehaviour
         while (countdownTime > 0) {
             index++;
             if (countdownTime >= playerlist.Count) {
-                CameraController.instance.ChangeCameraTarget(sharedObjects.cameraTargets.Player, playerlist[index-1].playerNumber);
-                CameraController.instance.ChangeZoom(4.21875f);
+                CameraController.instance.ChangePlayerCameraTarget(playerlist[index-1].playerNumber);
+                CameraController.instance.ChangeCameraTarget(sharedObjects.CameraTargets.Player);
+                CameraController.instance.ChangeZoom(CameraController.pixelPerfectZoomInCameraSize);
             }
            else {
-                CameraController.instance.ChangeCameraTarget(sharedObjects.cameraTargets.ActivePlayers);
-                CameraController.instance.ChangeZoom(8.4375f);
+                CameraController.instance.ChangeCameraTarget(sharedObjects.CameraTargets.ActivePlayers);
+                CameraController.instance.ChangeZoom(CameraController.pixelPerfectDefaultCameraSize);
            }
 
             SoundManager.instance.PlaySoundEffect("Tick1",0.5f);
