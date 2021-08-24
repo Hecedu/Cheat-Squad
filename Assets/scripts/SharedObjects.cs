@@ -17,23 +17,21 @@ namespace sharedObjects {
             spawnPoint = _spawnPoint;
         }
     }
-
     public class Cheat {
         public CheatInputs[] cheatCode;
         public Perks perk;
 
         public Cheat() {
             cheatCode = new CheatInputs[0];
-            perk = Perks.DoubleJump;
+            perk = Perks.ExtraLife;
         }
         public Cheat(int cheatLength){
              cheatCode = new CheatInputs[cheatLength];
-            perk = Perks.DoubleJump;
+            perk = Perks.ExtraLife;
         }
 
     }
-    public enum CheatInputs
-    {
+    public enum CheatInputs{
         Up,
         Down,
         Left,
@@ -44,14 +42,22 @@ namespace sharedObjects {
     }
     public enum Perks {
         ExtraLife,
-        RemoveEnemyLife,
-        InstantWin,
         SpeedBoost,
-        DoubleJump,
         JetPack,
         Shield,
+        TripleGun,
+        ShotGun,
+        GrenadeGun,
+        MiniGun,
     }
 
+    public enum Guns {
+        DefaultGun,
+        TripleGun,
+        ShotGun,
+        GrenadeGun,
+        MiniGun,
+    } 
     public enum GameStates {
         Countdown,
         Game,
@@ -61,5 +67,5 @@ namespace sharedObjects {
         Player,
         Stage,
         ActivePlayers
-        };
+    }
 }

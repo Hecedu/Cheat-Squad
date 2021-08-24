@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PauseController : MonoBehaviour
 {
@@ -46,5 +47,8 @@ public class PauseController : MonoBehaviour
         }
         Time.timeScale = 1f;
         gameIsPaused = false;
+    }
+    public void ExitButton() {
+        SceneManager.LoadScene("MainMenu");
     }
 }

@@ -52,7 +52,7 @@ public class CountdownController : MonoBehaviour
 
         countdownDisplay.text = "LETS GO!!";
         yield return new WaitForSeconds(0.5f);
-        SoundManager.instance.PlaySong("4cIcedTea",0.2f);
+        SoundManager.instance.PlaySong("Stage3",0.2f);
         countdownDisplay.enabled = false;
 
     }

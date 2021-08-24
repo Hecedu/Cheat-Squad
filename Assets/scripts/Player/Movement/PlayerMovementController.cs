@@ -61,7 +61,7 @@ public class PlayerMovementController : MonoBehaviour
     }
     public void OnLanding (bool landedOnGround){ 
         animator.SetBool ("IsJumping", false);
-        if (landedOnGround) this.GetComponentInChildren<PlayerParticleController>().playDustLanding();
+        if (landedOnGround) this.GetComponentInChildren<ParticleController>().playParticleEffect("Dust Landing");
         SoundManager.instance.PlaySoundEffect($"Landing{UnityEngine.Random.Range(1,4)}",0.2f);
     }
     public void OnCrouching (bool isCrouching) {

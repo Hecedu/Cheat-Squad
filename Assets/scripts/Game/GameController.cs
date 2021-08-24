@@ -38,9 +38,14 @@ public class GameController : MonoBehaviour
     }
 
     private void StartMatch(){
+        
         PlayerLoader.instance.InitializePlayers(playerInitDataList);
-        playerList = new List<GameObject>{GameObject.FindWithTag("Player1"),GameObject.FindWithTag("Player2")}; 
-        StartCountdown(); 
+        
+        playerList = GameObject.FindGameObjectsWithTag("Player").ToList(); 
+        if (PauseController.instance != null ){ 
+            PauseController.instance.Resume(false);
+            StartCountdown(); 
+            }
     }
     private void EndMatch(){
 
@@ -76,6 +81,7 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(respawnCooldownInSeconds);
 
         playerStats.playerState = PlayerState.Playing;
+        playerToRespawn.transform.GetComponent<CharacterController2D>().ResetMovement();
         playerToRespawn.transform.position = playerStats.spawnPoint;
         CameraController.instance.ChangeCameraTarget(CameraTargets.ActivePlayers);
     }

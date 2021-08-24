@@ -5,10 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
+    public GameObject credits;
     // Start is called before the first frame update
     void Start()
     {
-        
+        credits.SetActive(false);
     }
 
     // Update is called once per frame
@@ -20,10 +21,13 @@ public class MainMenuController : MonoBehaviour
     public void PlayButton(){
         SceneManager.LoadScene("TestLevel");
     }
-    public void OptionsButton(){
-
+    public void CreditsButton(){
+        credits.SetActive(true);
     }
     public void ExitButton(){
         Application.Quit();
+    }
+    public void ReturnButton(){
+        credits.SetActive(false);
     }
 }

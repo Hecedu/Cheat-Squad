@@ -69,7 +69,6 @@ public class CharacterController2D : MonoBehaviour
 		Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, groundedRadius, solidsLayerMask);
 		for (int i = 0; i < colliders.Length; i++)
 		{
-			Debug.Log(colliders[i].gameObject.name);
 			if (colliders[i].gameObject != gameObject)
 			{
 				isGrounded = true;
@@ -157,6 +156,12 @@ public class CharacterController2D : MonoBehaviour
 		isKnockbackPlaying = true;
 	}
 
+	public void ResetMovement() {
+		isKnockbackPlaying = false;
+		rigidBody2D.velocity = Vector3.zero;
+		rigidBody2D.angularVelocity = 0f;
+	}
+
 	private void Flip()
 	{
 		// Switch the way the player is labelled as facing.
@@ -168,7 +173,7 @@ public class CharacterController2D : MonoBehaviour
 	private void ApplyForceUp(float jumpForce){
 		isGrounded = false;
 		rigidBody2D.AddForce(new Vector2(0f, jumpForce));
-		this.GetComponentInChildren<PlayerParticleController>().playDustJump();
+		this.GetComponentInChildren<ParticleController>().playParticleEffect("Dust Jump");
 	}
 	private void ApplyForceHorizontal(float moveDirection, float moveSpeed) {
 		// Move the character by finding the target velocity
@@ -179,6 +184,6 @@ public class CharacterController2D : MonoBehaviour
 
 
 	private void OnCollisionEnter2D(Collision2D other) {
-		isKnockbackPlaying = false;
+		if (other.transform.tag != "Bullet") isKnockbackPlaying = false;
 	}
 }

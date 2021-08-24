@@ -14,7 +14,8 @@ public class CameraController : MonoBehaviour
     private int trackedPlayer = 1;
     public const float pixelPerfectDefaultCameraSize = 8.4375f;
     public const float pixelPerfectZoomInCameraSize = 4.21875f;
-     public const float pixelPerfectZoomOutCameraSize = 16.875f;
+    public const float pixelPerfectZoomOutCameraSize = 16.875f;
+
     // Start is called before the first frame update
     void Start()
     {

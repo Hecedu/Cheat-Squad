@@ -41,7 +41,8 @@ public class PlayerLoader : MonoBehaviour
     }
     private void SetTagAndLayers (PlayerInput player) {
         var playerNumber = player.gameObject.GetComponent<PlayerStats>().playerNumber;
-        player.tag = $"Player{playerNumber}";
+        player.name = $"Player{playerNumber}";
+        player.tag = "Player";
         player.gameObject.layer = LayerMask.NameToLayer($"Solids");
         player.gameObject.GetComponent<CharacterController2D>().solidsLayerMask = LayerMask.GetMask("Solids");
     }
