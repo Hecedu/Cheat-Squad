@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour
     public List<PlayerInitData> playerInitDataList;
     public List<GameObject> playerList;
     public int numberOfPlayers;
+    public static int maxLifes = 4;
     const float xBound = 15f; 
     const float yBound = 10f;
 
@@ -22,11 +23,11 @@ public class GameController : MonoBehaviour
             new PlayerInitData("HECEDU",1,"KeyboardWASD",new Vector2(-7,2)),
             new PlayerInitData("ABEL",2,"KeyboardIJKL",new Vector2(7,2))
         };
-        
+        InitializeMatch();
     }
     void Start()
     {
-        StartMatch();
+        StartCountdown();
     }
     void Update()
     {
@@ -37,22 +38,21 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void StartMatch(){
+    private void InitializeMatch(){
         
         PlayerLoader.instance.InitializePlayers(playerInitDataList);
         
         playerList = GameObject.FindGameObjectsWithTag("Player").ToList(); 
-        if (PauseController.instance != null ){ 
-            PauseController.instance.Resume(false);
-            StartCountdown(); 
-            }
     }
     private void EndMatch(){
 
     }
 
     private void StartCountdown(){
-        StartCoroutine(CountdownController.instance.StartCountdown(3));
+        if (PauseController.instance != null ){ 
+            PauseController.instance.Resume(false);
+             StartCoroutine(CountdownController.instance.StartCountdown(3));
+        }
     }
     public void CheckOutOfBounds(GameObject player){
         if (player.transform.position.x > xBound || player.transform.position.x < -xBound|| player.transform.position.y > yBound || player.transform.position.y < -yBound) {
@@ -73,7 +73,7 @@ public class GameController : MonoBehaviour
         SoundManager.instance.PlaySoundEffect($"Death{UnityEngine.Random.Range(1,4)}",0.2f);
 
         foreach(GameObject player in playerList){
-            if (player.GetComponent<PlayerStats>().playerState != PlayerState.Respawning) allRespawning = false;
+            if (playerStats.playerState != PlayerState.Respawning) allRespawning = false;
         }
         if (allRespawning) CameraController.instance.ChangeCameraTarget(CameraTargets.Stage);
         else CameraController.instance.ChangeCameraTarget(CameraTargets.ActivePlayers);

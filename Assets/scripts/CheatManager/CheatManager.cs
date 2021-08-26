@@ -15,30 +15,34 @@ public class CheatManager : MonoBehaviour
     public TMP_Text cheatDisplay;
     public Text perkDisplay;
     public int cheatLength = 5;
-    public Cheat currentCheat;
+    public GunCheat currentCheat;
+    private List<Guns> allGuns;
+    private List<CheatInputs> allCheatInputs;
 
     void Awake()
     {
         if (instance == null){
             instance = this;
         }
-        GenerateNewCheatCode(); 
+ 
     }
-
+    void Start() {
+        allCheatInputs = Enum.GetValues(typeof(CheatInputs)).Cast<CheatInputs>().ToList();
+        allGuns = Enum.GetValues(typeof(Guns)).Cast<Guns>().Where(x => x != Guns.DefaultGun).ToList();
+        GenerateNewGunCheatCode();
+    }
     void Update()
     {
     }
 
-    void GenerateNewCheatCode () {
-        currentCheat = new Cheat(cheatLength);
-        CheatInputs[] allCheatInputs = (CheatInputs[])Enum.GetValues(typeof(CheatInputs));
-        Perks[] allPerks = (Perks[])Enum.GetValues(typeof(CheatInputs)); 
+    void GenerateNewGunCheatCode () {
+        currentCheat = new GunCheat(cheatLength);
         for (int i =0; i < cheatLength; i ++){
-            currentCheat.cheatCode[i] = allCheatInputs[UnityEngine.Random.Range(0,(allCheatInputs.Length-1))];
+            currentCheat.cheatCode[i] = allCheatInputs[UnityEngine.Random.Range(0,(allCheatInputs.Count))];
         }
-        currentCheat.perk = allPerks[UnityEngine.Random.Range(0,(allPerks.Length-1))];
+        currentCheat.gun = allGuns[UnityEngine.Random.Range(0,(allGuns.Count))];
         cheatDisplay.text = InputsToString(currentCheat.cheatCode);
-        perkDisplay.text = currentCheat.perk.ToString();
+        perkDisplay.text = currentCheat.gun.ToString();
     }
     public string InputsToString(CheatInputs[] inputs) {
         String cheatCodeString = "";
@@ -55,19 +59,18 @@ public class CheatManager : MonoBehaviour
         }
         return cheatCodeString;
     }
-    public bool CompareInputsWithCheatCode(CheatInputs[] inputs){
-        if (Enumerable.SequenceEqual(inputs,currentCheat.cheatCode)) {
-            StartCoroutine(SearchForNewCheatCode(4));
-            return true;
+    public Guns?  CheckPlayerInput(CheatInputs[] inputs){
+        if (Enumerable.SequenceEqual(inputs,currentCheat.cheatCode)) {    
+            return currentCheat.gun;
         }
-        return false;
+        return null;
     }    
-    IEnumerator SearchForNewCheatCode(int seconds){
+    public IEnumerator SearchForNewCheatCode(int seconds){
         SoundManager.instance.PlaySoundEffect("PowerUp");
-        currentCheat = new Cheat();
+        currentCheat = new GunCheat();
         cheatDisplay.text = "";
         perkDisplay.text = "SEARCHING FOR NEW CHEAT CODE...";
         yield return new WaitForSeconds(seconds);
-        GenerateNewCheatCode();
+        GenerateNewGunCheatCode();
     }
 }

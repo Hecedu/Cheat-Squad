@@ -7,11 +7,12 @@ public class GrenadeBullet : MonoBehaviour
     public Rigidbody2D rb; 
     public float launchForceX = 300f;
     public float lauchForceY = 400f;
-    public float knockbackForceX = 100f;
+    public float knockbackForceX = 30f;
     public float knockbackForceY = 900f;
     public float time = 2f;
     private bool isColliding = false;
-    const float explosionRadius = 10f; 
+    const float explosionRadius = 1.5f; 
+    public LayerMask solidsLayerMask; 
 
     void Start()
     {
@@ -23,28 +24,41 @@ public class GrenadeBullet : MonoBehaviour
     void Update()
     {
         isColliding = false;
-        
     }
     private void OnCollisionEnter2D(Collision2D other) {
          if (!isColliding) {
             isColliding = true;
-            Destroy (gameObject);
-
             if (other.gameObject.tag == "Player")
             {
-                other.gameObject.GetComponentInChildren<ParticleController>().playParticleEffect("Dust Explosion");
-                if (transform.rotation.y > -1) other.gameObject.GetComponent<CharacterController2D>().StartKnockback(new Vector2 (knockbackForceX, knockbackForceY), true);
-                else other.gameObject.GetComponent<CharacterController2D>().StartKnockback(new Vector2 (knockbackForceX, knockbackForceY), false);
+                var otherParticleController = other.gameObject.GetComponentInChildren<ParticleController>();
+                var otherCharacterController2D = other.gameObject.GetComponent<CharacterController2D>();
+
+                Destroy (gameObject);
+                otherParticleController.playParticleEffect("Dust Explosion");
+                if (transform.rotation.eulerAngles.y < 180) otherCharacterController2D.StartKnockback(new Vector2 (knockbackForceX, knockbackForceY), true);
+                else otherCharacterController2D.StartKnockback(new Vector2 (knockbackForceX, knockbackForceY), false);
  
             }
             else {
-                Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, explosionRadius, LayerMask.NameToLayer("Solids"));
+                var thisParticleController =transform.GetComponentInChildren<ParticleController>();
+                var thisSpriteRenderer = transform.GetComponentInChildren<SpriteRenderer>();
+                var thisCircleCollider2D = transform.GetComponentInChildren<CircleCollider2D>();
+                var isExploding = false;
+
+                thisParticleController.playParticleEffect("Dust Explosion");
+                Destroy(thisSpriteRenderer);                
+                Destroy(thisCircleCollider2D);
+                Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, explosionRadius,solidsLayerMask);
                 for (int i = 0; i < colliders.Length; i++)
                 {
-                    if (colliders[i].gameObject.tag == "Player")
+                    if (colliders[i].gameObject.tag == "Player" && !isExploding)
                     {
-                        if (colliders[i].transform.rotation.y > -1) colliders[i].gameObject.GetComponent<CharacterController2D>().StartKnockback(new Vector2 (knockbackForceX, knockbackForceY), true);
-                        else colliders[i].gameObject.GetComponent<CharacterController2D>().StartKnockback(new Vector2 (knockbackForceX, knockbackForceY), false);
+                        var colliderCharacterController2D = colliders[i].gameObject.GetComponent<CharacterController2D>();
+                        var deltaX = colliders[i].transform.position.x - transform.position.x; 
+
+                        isExploding = true;
+                        if (deltaX > 0) colliderCharacterController2D.StartKnockback(new Vector2 (knockbackForceX, knockbackForceY), true);
+                        else colliderCharacterController2D.StartKnockback(new Vector2 (knockbackForceX, knockbackForceY), false);
                     }
                 }
             }

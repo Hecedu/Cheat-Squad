@@ -27,7 +27,7 @@ public class DefaultBullet : MonoBehaviour
             Destroy (gameObject);
             if (other.gameObject.tag == "Player")
             {
-                if (transform.rotation.y > -1) other.gameObject.GetComponent<CharacterController2D>().StartKnockback(new Vector2 (knockbackForceX, knockbackForceY), true);
+                if (transform.rotation.eulerAngles.y < 180) other.gameObject.GetComponent<CharacterController2D>().StartKnockback(new Vector2 (knockbackForceX, knockbackForceY), true);
                 else other.gameObject.GetComponent<CharacterController2D>().StartKnockback(new Vector2 (knockbackForceX, knockbackForceY), false);
             
             }

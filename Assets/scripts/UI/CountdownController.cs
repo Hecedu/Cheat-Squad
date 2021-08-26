@@ -25,6 +25,7 @@ public class CountdownController : MonoBehaviour
     }
     public IEnumerator StartCountdown(int countdownTime) {
         var playerlist = GameController.instance.playerInitDataList;
+        
         PauseController.instance.PauseInput();
         countdownDisplay.text = "";
         yield return new WaitForSeconds(1f);

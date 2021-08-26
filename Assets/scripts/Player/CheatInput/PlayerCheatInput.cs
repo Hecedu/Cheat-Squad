@@ -49,14 +49,18 @@ public class PlayerCheatInput : MonoBehaviour
     }
 
     public void AddToInputQueue (CheatInputs input) {
-         if (inputQueue.Count == CheatManager.instance.cheatLength) {
-            inputQueue.Dequeue();
-        }
+        if (inputQueue.Count >= CheatManager.instance.cheatLength) inputQueue.Dequeue();
         inputQueue.Enqueue(input);
-        if (CheatManager.instance.CompareInputsWithCheatCode(inputQueue.ToArray())) {
-            //execute perk code
-        }
+        CheckMatch();
+       
     } 
+    private void CheckMatch() {
+        var CheatCheckOutput = CheatManager.instance.CheckPlayerInput(inputQueue.ToArray());
+        if (CheatCheckOutput != null) {
+            StartCoroutine(CheatManager.instance.SearchForNewCheatCode(3));
+            this.GetComponentInChildren<GunController>().ChangeEquipedGun(CheatCheckOutput.Value);
+        }
+    }
     public CheatInputs? DirectionToInput (Vector2 direction) {
         if (direction == Vector2.down) {
             return CheatInputs.Down;

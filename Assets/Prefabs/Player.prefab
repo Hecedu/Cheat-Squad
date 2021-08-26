@@ -96,6 +96,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 99698020117104838, guid: ee7f8dd5c1d8e044cb78e84987ffc3d5, type: 3}
+  gunType: 1
+  DefaultAmmo: 10
+  currentAmmo: 0
+  coolDownTime: 0.5
   recoilForceX: 10
   recoilForceY: 400
 --- !u!1 &1766386416503595911
@@ -152,8 +156,10 @@ MonoBehaviour:
   - {fileID: 6966453491950125821}
   - {fileID: 3589531071480096586}
   - {fileID: 5907201281573850632}
+  equipedGun: {fileID: 0}
   currentGunState: 0
   firePoint: {fileID: 1606932808660799389}
+  timeStamp: 0
 --- !u!1 &2107691997809797198
 GameObject:
   m_ObjectHideFlags: 0
@@ -5143,6 +5149,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 99698020117104838, guid: 032d7be5f48c94b48a3de31bfcdaa84e, type: 3}
+  gunType: 3
+  DefaultAmmo: 5
+  currentAmmo: 0
+  coolDownTime: 1
   recoilForceX: 10
   recoilForceY: 400
 --- !u!1 &5907201281573850632
@@ -5241,6 +5251,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 99698020117104838, guid: 4d080325a6be0274ea99b15096221bcb, type: 3}
+  gunType: 4
+  DefaultAmmo: 1
+  currentAmmo: 0
+  coolDownTime: 0
   recoilForceX: 10
   recoilForceY: 400
 --- !u!1 &6966453491950125821
@@ -5339,6 +5353,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 99698020117104838, guid: ef5a490253d7e8c468b469747cd6829b, type: 3}
+  gunType: 2
+  DefaultAmmo: 5
+  currentAmmo: 0
+  coolDownTime: 1
   recoilForceX: 20
   recoilForceY: 500
 --- !u!1 &8046429487633769225
@@ -15063,6 +15081,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 99698020117104838, guid: b1a147823beb89047b0f88607c4cc718, type: 3}
+  gunType: 0
+  DefaultAmmo: 0
+  currentAmmo: 0
+  coolDownTime: 0.25
   recoilForceX: 10
   recoilForceY: 400
 --- !u!1 &8721092774894017295
@@ -15468,7 +15490,7 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0013973713, y: -0.13275027}
+  m_Offset: {x: 0, y: -0.12}
   m_Size: {x: 0.73449945, y: 0.73449945}
   m_Direction: 0
 --- !u!114 &8721092774894017300

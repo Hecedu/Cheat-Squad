@@ -14,9 +14,8 @@ public class CheatDisplayController : MonoBehaviour
     void Start()
     {
         var player = GameObject.FindWithTag(playerTag);
-        if(player != null){
-            playerStats = player.GetComponent<PlayerStats>();
-        }
+
+        if(player != null) playerStats = player.GetComponent<PlayerStats>();
         playerName.text = playerStats.playerName;
     }
 

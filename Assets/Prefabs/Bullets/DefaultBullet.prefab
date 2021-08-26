@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 20
-  knockbackForceX: 20
-  knockbackForceY: 300
+  knockbackForceX: 10
+  knockbackForceY: 600
   time: 2
   rb: {fileID: 1647391373015978246}
