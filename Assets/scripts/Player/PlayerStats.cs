@@ -8,7 +8,7 @@ using UnityEngine;
         public int playerNumber;
         public PlayerState playerState;
         public Vector2 spawnPoint;
-        public int lifeCounter;
+        public int lifeNumber;
         public float movementSpeed;
         public bool jetPack = false;
         public bool shield = false;

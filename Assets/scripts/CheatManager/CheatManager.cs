@@ -13,7 +13,7 @@ public class CheatManager : MonoBehaviour
 {
     public static CheatManager instance; 
     public TMP_Text cheatDisplay;
-    public Text perkDisplay;
+    public Text gunDisplay;
     public int cheatLength = 5;
     public GunCheat currentCheat;
     private List<Guns> allGuns;
@@ -42,7 +42,14 @@ public class CheatManager : MonoBehaviour
         }
         currentCheat.gun = allGuns[UnityEngine.Random.Range(0,(allGuns.Count))];
         cheatDisplay.text = InputsToString(currentCheat.cheatCode);
-        perkDisplay.text = currentCheat.gun.ToString();
+        gunDisplay.text = gunToString(currentCheat.gun);
+    }
+    private string gunToString (Guns gun) {
+        if (gun == Guns.TripleGun) return "TRIPLE GUN"; 
+        if (gun == Guns.ShotGun) return "SHOTGUN";
+        if (gun == Guns.GrenadeGun) return "GRENADE GUN";
+        if (gun == Guns.MiniGun) return "MINIGUN";
+        return "CASE ERROR";
     }
     public string InputsToString(CheatInputs[] inputs) {
         String cheatCodeString = "";
@@ -69,7 +76,7 @@ public class CheatManager : MonoBehaviour
         SoundManager.instance.PlaySoundEffect("PowerUp");
         currentCheat = new GunCheat();
         cheatDisplay.text = "";
-        perkDisplay.text = "SEARCHING FOR NEW CHEAT CODE...";
+        gunDisplay.text = "SEARCHING...";
         yield return new WaitForSeconds(seconds);
         GenerateNewGunCheatCode();
     }

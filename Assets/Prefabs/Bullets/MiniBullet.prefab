@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 99698020117104839}
   - component: {fileID: 1647391373015978246}
   - component: {fileID: 7104241254381247794}
-  - component: {fileID: 1954191100251389779}
+  - component: {fileID: 5902090921486190176}
   m_Layer: 7
-  m_Name: MiniiBullet
+  m_Name: MiniBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122,7 +122,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.046875
---- !u!114 &1954191100251389779
+--- !u!114 &5902090921486190176
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,11 +131,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 99698020117104838}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f21fe2f109e61bd40b6910abe7289d69, type: 3}
+  m_Script: {fileID: 11500000, guid: 5975120b70c7a0244848d40a61d41acc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 20
-  knockbackForceX: 20
-  knockbackForceY: 300
+  knockbackForceX: 300
+  knockbackForceY: 1000
   time: 2
   rb: {fileID: 1647391373015978246}

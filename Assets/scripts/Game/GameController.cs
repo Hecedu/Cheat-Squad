@@ -4,6 +4,7 @@ using UnityEngine;
 using sharedObjects;
 using UnityEngine.InputSystem;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -12,17 +13,29 @@ public class GameController : MonoBehaviour
     public List<GameObject> playerList;
     public int numberOfPlayers;
     public static int maxLifes = 4;
-    const float xBound = 15f; 
-    const float yBound = 10f;
+    const float xBound = 25f; 
+    const float yBound = 20f;
 
     void Awake(){
+        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 1;
+
         if (instance == null){
             instance = this;
         }
-        playerInitDataList = new List<PlayerInitData>(){
-            new PlayerInitData("HECEDU",1,"KeyboardWASD",new Vector2(-7,2)),
-            new PlayerInitData("ABEL",2,"KeyboardIJKL",new Vector2(7,2))
-        };
+        if (Gamepad.all.Count() == 0) {
+                playerInitDataList = new List<PlayerInitData>(){
+                new PlayerInitData("PLAYER 1",1,"KeyboardWASD",new Vector2(-9,-3)),
+                new PlayerInitData("PLAYER 2",2,"KeyboardIJKL",new Vector2(9,-3))
+            };
+        }
+        else {
+            playerInitDataList = new List<PlayerInitData>(){
+                new PlayerInitData("PLAYER 1",1,"KeyboardWASD",new Vector2(-9,-3)),
+                new PlayerInitData("PLAYER 2",2,"Gamepad",new Vector2(9,-3))
+            };
+        }
+
         InitializeMatch();
     }
     void Start()
@@ -32,20 +45,28 @@ public class GameController : MonoBehaviour
     void Update()
     {
         foreach (GameObject player in playerList){
-            var currentPlayerState = player.GetComponent<PlayerStats>().playerState;
-            if (currentPlayerState == PlayerState.Playing) CheckOutOfBounds(player);
-            else if (currentPlayerState == PlayerState.Defeated) EndMatch();
+            var currentPlayerStats = player.GetComponent<PlayerStats>();
+            if (currentPlayerStats.playerState == PlayerState.Playing) CheckOutOfBounds(player);
+            else if (currentPlayerStats.playerState == PlayerState.Defeated) EndMatch(currentPlayerStats);
         }
     }
 
     private void InitializeMatch(){
-        
-        PlayerLoader.instance.InitializePlayers(playerInitDataList);
+        PlayerLoader.instance.InitializePlayers(playerInitDataList, maxLifes);
         
         playerList = GameObject.FindGameObjectsWithTag("Player").ToList(); 
     }
-    private void EndMatch(){
+    private void EndMatch(PlayerStats loser){
+        foreach (GameObject player in playerList){
 
+            var currentPlayerStats = player.GetComponent<PlayerStats>();
+            if (currentPlayerStats.playerState == PlayerState.Playing) {
+                CameraController.instance.ChangePlayerCameraTarget(currentPlayerStats.playerNumber);
+                CameraController.instance.ChangeCameraTarget(CameraTargets.Player);
+                NotificationsController.instance.DisplayResults(currentPlayerStats);
+            } else CameraController.instance.ChangeCameraTarget(CameraTargets.Stage);
+        }
+        StartCoroutine(SlowMotionController.instance.StartMatchEndSlowMotion(5f));
     }
 
     private void StartCountdown(){
@@ -66,23 +87,29 @@ public class GameController : MonoBehaviour
     IEnumerator RespawnPlayer (GameObject playerToRespawn, float respawnCooldownInSeconds) {
         var allRespawning = true;
         var playerStats = playerToRespawn.GetComponent<PlayerStats>();
-        
-        playerStats.playerState = PlayerState.Respawning;
-        playerStats.lifeCounter --;
+        var CharacterController2D = playerToRespawn.transform.GetComponent<CharacterController2D>();
+        var gunController = playerToRespawn.GetComponentInChildren<GunController>();
 
+        playerStats.playerState = PlayerState.Respawning;
+        playerStats.lifeNumber --;
         SoundManager.instance.PlaySoundEffect($"Death{UnityEngine.Random.Range(1,4)}",0.2f);
 
-        foreach(GameObject player in playerList){
-            if (playerStats.playerState != PlayerState.Respawning) allRespawning = false;
+        if (playerStats.lifeNumber == 0) playerStats.playerState = PlayerState.Defeated;
+        else {
+              foreach(GameObject player in playerList){
+                var currentPlayerStats = player.GetComponent<PlayerStats>();
+                if (currentPlayerStats.playerState != PlayerState.Respawning) allRespawning = false;
+            }
+            if (allRespawning) CameraController.instance.ChangeCameraTarget(CameraTargets.Stage);
+            else CameraController.instance.ChangeCameraTarget(CameraTargets.ActivePlayers);
+
+            yield return new WaitForSeconds(respawnCooldownInSeconds);
+
+            playerStats.playerState = PlayerState.Playing;
+            CharacterController2D.ResetMovement();
+            gunController.InitializeGunController();
+            playerToRespawn.transform.position = playerStats.spawnPoint;
+            CameraController.instance.ChangeCameraTarget(CameraTargets.ActivePlayers);
         }
-        if (allRespawning) CameraController.instance.ChangeCameraTarget(CameraTargets.Stage);
-        else CameraController.instance.ChangeCameraTarget(CameraTargets.ActivePlayers);
-
-        yield return new WaitForSeconds(respawnCooldownInSeconds);
-
-        playerStats.playerState = PlayerState.Playing;
-        playerToRespawn.transform.GetComponent<CharacterController2D>().ResetMovement();
-        playerToRespawn.transform.position = playerStats.spawnPoint;
-        CameraController.instance.ChangeCameraTarget(CameraTargets.ActivePlayers);
     }
 }

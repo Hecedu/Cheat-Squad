@@ -41,6 +41,6 @@ public class SoundManager : MonoBehaviour
         songAudioSource.Pause();
     }
     public void ResumeSong(){
-        songAudioSource.Play();
+        songAudioSource.UnPause();
     }
 }

@@ -27,13 +27,13 @@ public class ParallaxController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         for (int i = 0; i<ParallaxLayers.Length; i++){
             float parallaxX = (LastCameraPosition.x - Cam.position.x) * ParallaxScales[i];
             float backgroundTargetPosX = ParallaxLayers[i].position.x + parallaxX;
             Vector3 BackgroundTargetPosition = new Vector3 (backgroundTargetPosX,ParallaxLayers[i].position.y, ParallaxLayers[i].position.z);
-            ParallaxLayers[i].position = Vector3.Lerp(ParallaxLayers[i].position, BackgroundTargetPosition, smoothingScale);
+            ParallaxLayers[i].position = Vector3.Lerp(ParallaxLayers[i].position, BackgroundTargetPosition, smoothingScale * Time.unscaledDeltaTime);
         }
         LastCameraPosition = Cam.position;
     }

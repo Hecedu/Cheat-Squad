@@ -18,8 +18,7 @@ public class Gun : MonoBehaviour
     void start() {
     }
     public void DepleteAmmo() {
-        Debug.Log(currentAmmo);
-        if (currentAmmo > 0)currentAmmo --;
+        if (currentAmmo > 1)currentAmmo --;
         else GetComponentInParent<GunController>().ChangeEquipedGun(Guns.DefaultGun);
     }
 }

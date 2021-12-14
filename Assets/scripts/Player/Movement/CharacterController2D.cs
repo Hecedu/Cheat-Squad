@@ -29,8 +29,6 @@ public class CharacterController2D : MonoBehaviour
 	//knockback system
 	[SerializeField] private bool isKnockbackPlaying = false;
 	private bool isKnockbackDirectionRight = true;
-	private List<string> otherPlayerLayers;
-
 
 
 
@@ -56,10 +54,6 @@ public class CharacterController2D : MonoBehaviour
 	private void Start() {
 		if (transform.rotation.y < 0) isFacingRight = false;
 		else isFacingRight = true;
-		otherPlayerLayers = new List<string>();
-		foreach (int playerNumber in GameController.instance.GetOtherPlayerNumbers(this.GetComponent<PlayerStats>().playerNumber)){
-			otherPlayerLayers.Add($"Player{playerNumber}");
-		}
 	}
 
 	private void FixedUpdate()

@@ -14,7 +14,6 @@ public class MiniBullet : MonoBehaviour
     void Start()
     {
         rb.velocity = transform.right * speed;
-        Destroy (gameObject, time);
     }
 
     void Update()
@@ -24,9 +23,9 @@ public class MiniBullet : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other) {
         if (!isColliding) {
             isColliding = true;
-            Destroy (gameObject);
             if (other.gameObject.tag == "Player")
             {
+                StartCoroutine(SlowMotionController.instance.StartHitStun(0.5f, this.gameObject));
                 if (transform.rotation.eulerAngles.y < 180) other.gameObject.GetComponent<CharacterController2D>().StartKnockback(new Vector2 (knockbackForceX, knockbackForceY), true);
                 else other.gameObject.GetComponent<CharacterController2D>().StartKnockback(new Vector2 (knockbackForceX, knockbackForceY), false);
             

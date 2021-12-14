@@ -26,10 +26,10 @@ public class CameraController : MonoBehaviour
         currentCameraTarget = CameraTargets.ActivePlayers;
     }
 
-    void FixedUpdate()
+    void Update()
     {
-        this.transform.position = Vector3.Lerp(this.transform.position, CalculateCameraTargetPosition(currentCameraTarget), 0.1f );
-        myCamera.orthographicSize = Mathf.MoveTowards(myCamera.orthographicSize, targetCameraSize, 0.5f);
+        this.transform.position = Vector3.Lerp(this.transform.position, CalculateCameraTargetPosition(currentCameraTarget), 3f * Time.unscaledDeltaTime );
+        myCamera.orthographicSize = Mathf.MoveTowards(myCamera.orthographicSize, targetCameraSize, 20f * Time.unscaledDeltaTime);
     }
 
     private Vector3 CalculateCameraTargetPosition(CameraTargets cameraTarget){
@@ -60,7 +60,6 @@ public class CameraController : MonoBehaviour
             }
 
     }
-    //lerp in incrmenets
     public void ChangeZoom (float size){
         targetCameraSize = size;
     }
@@ -68,7 +67,7 @@ public class CameraController : MonoBehaviour
     public void ChangeCameraTarget (CameraTargets cameraTarget) {
         this.currentCameraTarget = cameraTarget;
         if (cameraTarget == CameraTargets.ActivePlayers) ChangeZoom(pixelPerfectDefaultCameraSize);
-        else if (cameraTarget == CameraTargets.ActivePlayers) ChangeZoom(pixelPerfectZoomInCameraSize);
+        else if (cameraTarget == CameraTargets.Player) ChangeZoom(pixelPerfectZoomInCameraSize);
         else if (cameraTarget == CameraTargets.Stage) ChangeZoom(pixelPerfectZoomOutCameraSize);
     }
     public void ChangePlayerCameraTarget (int playerToTrack) {
@@ -81,7 +80,7 @@ public class CameraController : MonoBehaviour
             float x = Random.Range(-1f,1f) * magnitude;
             float y = Random.Range(-1f,1f) * magnitude;
             this.transform.position += new Vector3 (x,y,0);
-            elapsed += Time.deltaTime;
+            elapsed += Time.unscaledDeltaTime;
             yield return null;
         }
     }

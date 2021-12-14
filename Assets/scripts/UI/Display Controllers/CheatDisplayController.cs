@@ -24,4 +24,5 @@ public class CheatDisplayController : MonoBehaviour
     {
         playerCheatDisplay.text = playerStats.playerInputString;
     }
+
 }

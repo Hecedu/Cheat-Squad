@@ -147,6 +147,72 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "Xbox controller",
+                    "id": "cd6596dd-d951-4336-96dc-163f6e1d1884",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement Vertical",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "2b5391c5-76cd-40fe-a993-083aa3315187",
+                    "path": "<Gamepad>/leftStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Movement Vertical",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "e45f1ece-59fd-4e28-9789-f2aab3d8c95e",
+                    "path": "<Gamepad>/leftStick/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Movement Vertical",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Xbox Controller Dpad",
+                    "id": "dc06f599-9336-4968-8e4c-1cee3c3dd90e",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement Vertical",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "9f8cdd38-3b96-4c24-af87-525c060b4b5d",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Movement Vertical",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "4adcc75e-fe1b-4a21-bf6a-b6c079bdccef",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Movement Vertical",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "Keyboard",
                     "id": "bb75ad0d-2221-45b6-93f4-b3c66a80b717",
                     "path": "1DAxis",
@@ -213,12 +279,89 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "Xbox controller",
+                    "id": "43ca5125-5f3c-4ae7-a30e-7d0f84bd0442",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement Horizontal",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "e953c1dc-f6fe-4941-82a9-57158b75dc2f",
+                    "path": "<Gamepad>/leftStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Movement Horizontal",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "4192454b-69e1-458b-9c72-a4e1f19a0f00",
+                    "path": "<Gamepad>/leftStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Movement Horizontal",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Xbox Controller Dpad",
+                    "id": "927e137e-6091-4b30-a0de-5cb23a215c14",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement Horizontal",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "41e2f158-a1aa-4023-9f90-aa090712ff25",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Movement Horizontal",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "839515dd-203f-4d34-a982-0358dc1c6b1e",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Movement Horizontal",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "",
                     "id": "9250317a-fec3-44c1-8e6e-f8df9281a097",
                     "path": "<Keyboard>/semicolon",
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardIJKL",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1f842f6e-e530-429a-946c-85677e0636ef",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -236,11 +379,44 @@
                 },
                 {
                     "name": "",
+                    "id": "31ce68d8-20d1-4463-a508-3840a9e690ad",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8c071eac-7e6b-42fb-8556-7bee0b5ba4fc",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "da7dae68-82a3-4c05-b114-e65bc2d3180f",
                     "path": "<Keyboard>/backspace",
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardIJKL",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6a82ada6-7e48-41ce-8464-3f42f4d0e136",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
                     "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -261,27 +437,22 @@
             ]
         },
         {
-            "name": "Controller",
-            "bindingGroup": "Controller",
+            "name": "KeyboardIJKL",
+            "bindingGroup": "KeyboardIJKL",
             "devices": [
                 {
-                    "devicePath": "<Gamepad>",
-                    "isOptional": false,
-                    "isOR": false
-                },
-                {
-                    "devicePath": "<Gamepad>",
+                    "devicePath": "<Keyboard>",
                     "isOptional": false,
                     "isOR": false
                 }
             ]
         },
         {
-            "name": "KeyboardIJKL",
-            "bindingGroup": "KeyboardIJKL",
+            "name": "Gamepad",
+            "bindingGroup": "Gamepad",
             "devices": [
                 {
-                    "devicePath": "<Keyboard>",
+                    "devicePath": "<Gamepad>",
                     "isOptional": false,
                     "isOR": false
                 }

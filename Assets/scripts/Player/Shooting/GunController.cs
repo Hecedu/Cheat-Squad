@@ -21,20 +21,17 @@ public class GunController : MonoBehaviour
         }
 
     }
-    private void OnEnable() {
-        currentGunState = Guns.DefaultGun;
-        timeStamp = Time.time;
-        SwapGun();
+
+    private void Start() {
     }
-    // Update is called once per frame
     void Update()
     {
         if (lastGunState != currentGunState) {
             SwapGun();
         }
         lastGunState = currentGunState;
-        
     }
+
     public void Shoot(){
         var equipedGunData = equipedGun.GetComponent<Gun>();
         var characterController2D = transform.GetComponentInParent<CharacterController2D>();
@@ -46,22 +43,28 @@ public class GunController : MonoBehaviour
             Instantiate(equipedGunData.bulletPrefab, firePoint.position, firePoint.rotation);
             if (transform.rotation.eulerAngles.y < 180) characterController2D.StartKnockback(new Vector2 (equipedGunData.recoilForceX, equipedGunData.recoilForceY), false);
             else characterController2D.StartKnockback(new Vector2 (equipedGunData.recoilForceX, equipedGunData.recoilForceY), true);
-        }    
+        } 
     }
     private void SwapGun() {
 
-        foreach (GameObject gun in gunList) {
-            if (gun.GetComponent<Gun>().gunType == currentGunState) {
-                gun.SetActive(true);
-                equipedGun = gun;
-                AmmoDisplayController.instance.UpdateGun();
+        foreach (GameObject gunGameObject in gunList) {
+            var gun = gunGameObject.GetComponent<Gun>();
+            if (gun.gunType == currentGunState) {
+                gunGameObject.SetActive(true);
+                equipedGun = gunGameObject;
+                transform.GetComponentInParent<CharacterDisplayController>().UpdateAmmoDisplay(gun);
             }
             else{  
-                gun.SetActive(false);
+                gunGameObject.SetActive(false);
             }
         }
     }
     public void ChangeEquipedGun(Guns gun) {
         currentGunState = gun;
+    }
+    public void InitializeGunController(){
+        currentGunState = Guns.DefaultGun;
+        timeStamp = Time.time;
+        SwapGun();
     }
 }
