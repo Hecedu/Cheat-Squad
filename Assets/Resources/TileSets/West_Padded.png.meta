@@ -146,10 +146,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -188,6 +190,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  swizzle: 50462976
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -1242,9 +1245,51 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      West_Padded_15: 7198439333474432200
+      West_Padded_11: 293470309302883676
+      West_Padded_2: -1616449906792930951
+      West_Padded_28: 4597032345831129649
+      West_Padded_8: 4141116677051847547
+      West_Padded_19: 2302559201661398222
+      West_Padded_0: 7940214598870115278
+      West_Padded_39: -8816265631579939819
+      West_Padded_41: 2511260574957765072
+      West_Padded_17: -6748291593495036043
+      West_Padded_25: 6401835347368072702
+      West_Padded_26: 7790611784367916036
+      West_Padded_6: -6393253524460454929
+      West_Padded_3: -7640291907704366596
+      West_Padded_4: -5671584347033287222
+      West_Padded_9: 797294022157467225
+      West_Padded_12: -3711343445092579429
+      West_Padded_21: -642500753700711062
+      West_Padded_1: 630544482926348665
+      West_Padded_29: 7180435641906455919
+      West_Padded_23: 3495182200136784754
+      West_Padded_30: 7198118984371110868
+      West_Padded_31: 5186202899442336366
+      West_Padded_33: -488917063053454325
+      West_Padded_20: -215023752165229324
+      West_Padded_27: -5527321430394804943
+      West_Padded_13: 277803991401208327
+      West_Padded_5: -8198670968633863529
+      West_Padded_22: -952958630767701608
+      West_Padded_24: -6180298745893205351
+      West_Padded_32: 1467027514516539067
+      West_Padded_16: -298872458155256091
+      West_Padded_34: -5398393027626415328
+      West_Padded_35: 6932580690792901362
+      West_Padded_14: -6661448867931802184
+      West_Padded_18: -2584258297633330516
+      West_Padded_37: 9094764470439142644
+      West_Padded_38: 8201361853346361669
+      West_Padded_36: -6849649362726132278
+      West_Padded_40: -909935784197047053
+      West_Padded_7: 1895152576520188783
+      West_Padded_10: 7460637339895219207
   spritePackingTag: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

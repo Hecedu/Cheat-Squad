@@ -14,7 +14,7 @@ public class CheatManager : MonoBehaviour
     public static CheatManager instance; 
     public TMP_Text cheatDisplay;
     public Text gunDisplay;
-    public int cheatLength = 5;
+    public int cheatLength = 3;
     public GunCheat currentCheat;
     private List<Guns> allGuns;
     private List<CheatInputs> allCheatInputs;
@@ -38,7 +38,12 @@ public class CheatManager : MonoBehaviour
     void GenerateNewGunCheatCode () {
         currentCheat = new GunCheat(cheatLength);
         for (int i =0; i < cheatLength; i ++){
-            currentCheat.cheatCode[i] = allCheatInputs[UnityEngine.Random.Range(0,(allCheatInputs.Count))];
+            if (i < cheatLength-1) {
+                currentCheat.cheatCode[i] = allCheatInputs[UnityEngine.Random.Range(0,(allCheatInputs.Count-2))];
+            }
+            else {
+                currentCheat.cheatCode[i] = allCheatInputs[UnityEngine.Random.Range(allCheatInputs.Count-2,(allCheatInputs.Count))];
+            }
         }
         currentCheat.gun = allGuns[UnityEngine.Random.Range(0,(allGuns.Count))];
         cheatDisplay.text = InputsToString(currentCheat.cheatCode);
@@ -47,7 +52,7 @@ public class CheatManager : MonoBehaviour
     private string gunToString (Guns gun) {
         if (gun == Guns.TripleGun) return "TRIPLE GUN"; 
         if (gun == Guns.ShotGun) return "SHOTGUN";
-        if (gun == Guns.GrenadeGun) return "GRENADE GUN";
+        if (gun == Guns.GrenadeGun) return "GRENADE LAUNCHER";
         if (gun == Guns.MiniGun) return "MINIGUN";
         return "CASE ERROR";
     }
@@ -76,7 +81,7 @@ public class CheatManager : MonoBehaviour
         SoundManager.instance.PlaySoundEffect("PowerUp");
         currentCheat = new GunCheat();
         cheatDisplay.text = "";
-        gunDisplay.text = "SEARCHING...";
+        gunDisplay.text = "???";
         yield return new WaitForSeconds(seconds);
         GenerateNewGunCheatCode();
     }
